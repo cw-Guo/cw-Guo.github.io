@@ -1,0 +1,37 @@
+###配置guide网址：https://yun.yunyoujun.cn/guide/config.html
+
+mode: auto   # 可选 light | dark | auto
+
+###首页配置
+banner:
+  enable: true
+  title: 云游君的小站
+  src: /js/ui/banner.js
+  banner: true
+  cloud:
+    enable: true
+    color: "white"
+  go_down:
+    enable: true
+    icon: icon-arrow-down-s-line
+
+bg_image: # to be finished 
+  enable: true
+  url: https://cdn.jsdelivr.net/gh/YunYouJun/cdn/img/bg/stars-timing-0-blur-30px.jpg
+  #dark:
+  # blur: 30px # 设置背景模糊程度
+  opacity: 0.8
+
+###公告
+notice:
+  enable: true
+  content: This is a test for notice.
+
+### 侧边栏
+
+avatar:
+  enable: true
+  url: /images/myself.jpg
+  rounded: true
+  opacity: 1
+  mickey_mouse: false
