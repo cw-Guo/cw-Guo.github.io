@@ -5,7 +5,7 @@ mode: auto   # 可选 light | dark | auto
 ###首页配置
 banner:
   enable: true
-  title: 云游君的小站
+  title: 庄生晓曼
   src: /js/ui/banner.js
   banner: true
   cloud:
@@ -25,13 +25,87 @@ bg_image: # to be finished
 ###公告
 notice:
   enable: true
-  content: This is a test for notice.
+  content: This blog is under construction
 
 ### 侧边栏
+sidebar:
+  bg_image: https://cdn.jsdelivr.net/gh/YunYouJun/cdn/img/bg/stars-timing-1.jpg
+  bg_position: bottom 3rem center
+  tagcloud:
+    enable: false
+    amount: 20
+toc:
+  list_number: true
+  max_depth: 6
+  min_depth: 1
+  # placeholder: 很遗憾，咱没写啥目录
+
+social:
+  - name: GitHub
+    link: https://github.com/cw-Guo
+    icon: icon-github-line
+    color: "#6e5494"
+
+  - name: E-Mail
+    link: mailto:tan0723mac@163.com
+    icon: icon-mail-line
+    color: "#8E71C1"
+
+pages:
 
 avatar:
   enable: true
   url: /images/myself.jpg
   rounded: true
   opacity: 1
-  mickey_mouse: false
+  mickey_mouse: true
+
+menu:
+  home:
+    path: /
+    icon: icon-home-4-line
+  list:
+    - type: archives
+      path: /archives/
+      icon: icon-archive-line
+    - type: categories
+      path: /categories/
+      icon: icon-folder-2-line
+    - type: tags
+      path: /tags/
+      icon: icon-price-tag-3-line
+
+
+
+
+####页脚
+footer:
+  since: 2020
+
+  # Icon between year and copyright info.
+  icon:
+    # `heart` is recommended with animation in red (#ff0000).
+    name: icon-heart-line
+    # If you want to animate the icon, set it to true.
+    animated: true
+    # Change the color of icon, using Hex Code.
+    color: "#ff0000"
+
+  powered:
+    # Hexo link (Powered by Hexo).
+    enable: true
+
+  # Beian icp information for Chinese users. In China, every legal website should have a beian icp in website footer.
+  # http://www.beian.miit.gov.cn
+  beian:
+    enable: false
+    # icp: 苏ICP备xxxxxxxx号
+
+  live_time:
+    enable: true
+    prefix: 本博客已运行
+    suffix: ""
+    start_time: "2020-06-28T00:00:00"
+
+  # Any custom text can be defined here.
+  # custom_text: Hosted by <a href="https://pages.coding.me" rel="noopener" target="_blank">Coding Pages</a>
