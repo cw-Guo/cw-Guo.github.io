@@ -18,7 +18,7 @@ jobs:
     
     - name: Hexo deploy
       env:
-        HEXO_DEPLOY_KEY: ${{ secrets.HEXO_DEPLOY_KEY }}
+        HEXO_DEPLOY_KEY: ${{ secret.HEXO_DEPLOY_KEY }}
       run: |
         mkdir -p ~/.ssh/
         echo "$HEXO_DEPLOY_KEY" > ~/.ssh/id_rsa
