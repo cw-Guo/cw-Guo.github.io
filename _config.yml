@@ -100,5 +100,5 @@ theme: yun #origin:landscape
 deploy:
   type: git
   repo:
-    github: https://github.com/cw-Guo/cw-Guo.github.io.git
+    github: https://github.com/cw-Guo/cw-Guo.github.io
   branch: master
