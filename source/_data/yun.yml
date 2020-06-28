@@ -68,15 +68,39 @@ menu:
     - type: archives
       path: /archives/
       icon: icon-archive-line
-    - type: categories
-      path: /categories/
-      icon: icon-folder-2-line
-    - type: tags
-      path: /tags/
-      icon: icon-price-tag-3-line
+    ##- type: categories
+    ##  path: /categories/
+    ##  icon: icon-folder-2-line
+    ##- type: tags
+    ##  path: /tags/
+    ##  icon: icon-price-tag-3-line
 
+cursor:
+  enable: true
 
+baidu_push: true
 
+##about post 
+symbols_count_time:
+  symbols: false
+  time: true
+  total_symbols: false
+  total_time: true
+  exclude_codeblock: false
+  awl: 2
+  wpm: 275
+  suffix: "mins."
+
+post_meta:
+  item_text: false
+  created_at: true
+  updated_at: true
+  categories: true
+  tags: true
+
+post_edit:
+  enable: true
+  url: https://github.com/cw-Guo/cw-Guo.github.io/tree/hexo/source/
 
 ####页脚
 footer:
