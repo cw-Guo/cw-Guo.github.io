@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          submodules: false
+          submodules: true
 
       - name: Setup Node
         uses: actions/setup-node@v1
