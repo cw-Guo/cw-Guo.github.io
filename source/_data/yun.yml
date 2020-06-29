@@ -2,6 +2,29 @@
 
 mode: auto   # 可选 light | dark | auto
 
+#图标
+favicon: /favicon.ico
+
+#打赏
+reward_settings:
+  enable: false
+  icon: icon-hand-coin-line
+  comment: 一元也是爱
+
+reward: #to be finished, no imgs yet
+  - name: 支付宝
+    path: https://cdn.jsdelivr.net/gh/cw-Guo/cdn/img/donate/alipay-qrcode.jpg
+    color: "#00A3EE"
+    icon: icon-alipay-line
+  - name: QQ 支付
+    path: https://cdn.jsdelivr.net/gh/cw-Guo/cdn/img/donate/qqpay-qrcode.png
+    color: "#12B7F5"
+    icon: icon-qq-line
+  - name: 微信支付
+    path: https://cdn.jsdelivr.net/gh/cw-Guo/cdn/img/donate/wechatpay-qrcode.jpg
+    color: "#2DC100"
+    icon: icon-wechat-pay-line
+
 ###首页配置
 banner:
   enable: true
@@ -90,13 +113,6 @@ symbols_count_time:
   awl: 2
   wpm: 275
   suffix: "mins."
-
-post_meta:
-  item_text: false
-  created_at: true
-  updated_at: true
-  categories: true
-  tags: true
 
 post_edit:
   enable: true
