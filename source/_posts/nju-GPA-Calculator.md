@@ -9,7 +9,7 @@ tags:
 ## 使用
 - 将项目文件夹下载到本地，chrome extensions打开开发者模式，加载已解压的扩展程序，直接选择项目文件夹。
 - 安装完毕后，登录教务处网站，点击插件图标即可。
-![运行截图]( https://cdn.jsdelivr.net/gh/cw-Guo/NJU_GPA_Calculator/images/screenshot.png)
+![运行截图](https://cdn.jsdelivr.net/gh/cw-Guo/NJU_GPA_Calculator/images/screenshot.png)
 
 ## 其他说明
 本拓展程序的原开发者为：@[waterxjw](https://github.com/waterxjw/NJU-GPA-Calculator)
