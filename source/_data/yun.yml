@@ -75,6 +75,10 @@ social:
     color: "#8E71C1"
 
 pages:
+ - name: Academic CV
+   url: /profile
+   icon: icon-genderless-line
+   colcr: dodgerblue
 
 avatar:
   enable: true
