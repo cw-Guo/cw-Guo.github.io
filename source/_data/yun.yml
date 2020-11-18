@@ -151,5 +151,12 @@ footer:
     suffix: ""
     start_time: "2020-06-28T00:00:00"
 
+  #代码块
+  codeblock:
+  copy_btn: true
+  prismjs:
+    light: default
+    dark: tomorrow
+
   # Any custom text can be defined here.
   # custom_text: Hosted by <a href="https://pages.coding.me" rel="noopener" target="_blank">Coding Pages</a>

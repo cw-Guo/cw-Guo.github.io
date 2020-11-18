@@ -102,3 +102,15 @@ deploy:
   repo:
     github: https://github.com/cw-Guo/cw-Guo.github.io
   branch: master
+
+
+#代码块
+# 关闭 highlight
+highlight:
+  enable: false
+# 启用 prism
+prismjs:
+  enable: true
+  preprocess: true
+  line_number: false
+  tab_replace: ""
