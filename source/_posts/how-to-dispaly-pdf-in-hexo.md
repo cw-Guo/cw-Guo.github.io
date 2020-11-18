@@ -11,10 +11,12 @@ tags: Hexo
 
 简单介绍一下：
 - 安装hexo-pdf 插件 
+
 ```shell
 npm install --save hexo-pdf
 ```
 - 在文章中嵌入如下代码
+
 ``` python
 {% pdf ./mydocument.pdf %} %这是使用本地文档的方式
 {% pdf url of your resource %} %使用在线资源
@@ -31,7 +33,7 @@ npm install --save hexo-pdf
 
 -------
 参考的网站：
-- https://www.jianshu.com/p/3a0c19160b32?utm_campaign=maleskine&utm_content=note&utm_medium=seo_notes&utm_source=recommendation pdf 显示不全 长度不够
+- pdf 显示不全 长度不够 https://www.jianshu.com/p/3a0c19160b32?utm_campaign=maleskine&utm_content=note&utm_medium=seo_notes&utm_source=recommendation 
 
 - 调整pdf显示的大小 https://github.com/superalsrk/hexo-pdf/issues/7
 
