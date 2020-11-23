@@ -27,7 +27,12 @@ npm install --save hexo-pdf
 #### 问题
 
 目前展示pdf的效果初步成功了，但是还有一个问题。就是pdf的长显得非常短，预览起来非常丑。猜想是由于网站的主题格式限制的。
-在官方文档的[issue](https://github.com/superalsrk/hexo-pdf/issues/7) 中，有一段解答。目前还未实现。
+在官方文档的[issue](https://github.com/superalsrk/hexo-pdf/issues/7) 中，有一段解答。
+在博客根目录下找到`node_modules\hexo-pdf`文件夹，其中有一个`reader.ejs`文件，修改其中的`height` `width`即可达到对应效果。
+值得注意的是，需要执行 hexo clean, generate, deploy 三条命令重新生成，因为我们的`node_modules\`文件夹没有上传至GitHub，所以我们对该文件夹下的文件的修改，并没有同步到GitHub。
+我们部署的workflow也不能自动实现这个更新。
+手动执行deploy 之后，pdf 显示正常。
+
 
 
 
@@ -37,4 +42,4 @@ npm install --save hexo-pdf
 
 - 调整pdf显示的大小 https://github.com/superalsrk/hexo-pdf/issues/7
 
-- 如何预览pdf https://blog.csdn.net/qq_43827595/article/details/104574959
+- 如何预览 pdf https://blog.csdn.net/qq_43827595/article/details/104574959
