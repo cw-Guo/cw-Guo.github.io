@@ -1,7 +1,7 @@
 ---
 title: nju-GPA-Calculator 说明文档
 date: 2020-07-01 12:34:37
-tags:
+tags: project
 ---
 
 针对南京大学教务处网站的GPA计算器 `chrome`扩展程序

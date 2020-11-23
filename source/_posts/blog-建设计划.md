@@ -1,7 +1,7 @@
 ---
 title: blog 建设计划
 date: 2020-06-28 20:22:54
-tags:
+tags: plan
 hide: false
 ---
 
