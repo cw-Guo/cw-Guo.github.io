@@ -29,7 +29,7 @@ TCP 采用三次握手建立连接，四次挥手断开连接。
 - 客户端发送一个SYN段，并指明客户端的初始序列号
 - 服务端发送自己的SYN段作为应答，为了确认客户端的SYN，将ISN(c)+1作为ACK数值
 - 为了确认服务器端的SYN，客户端将ISN(s)+1作为返回的ACK数值。
-![三次握手](../images/three_way.png)
+![三次握手](https://cdn.jsdelivr.net/gh/cw-Guo/NJU_GPA_Calculator/images/three_way.png)
 
 ##### 四次挥手 - 断开连接
 - 客户端发送一个FIN段，并包含一个希望接收者看到的自己当前的序列号K. 同时还包含一个ACK表示确认对方最近一次发过来的数据。
@@ -37,7 +37,7 @@ TCP 采用三次握手建立连接，四次挥手断开连接。
 - 服务端发起自己的FIN段，ACK=K+1, Seq=L
 - 客户端确认。ACK=L+1
 
-![四次挥手](../images/four_way.png)
+![四次挥手](https://cdn.jsdelivr.net/gh/cw-Guo/NJU_GPA_Calculator/images/four_way.png)
 #### why 三次握手和四次挥手
 - 三次握手
  简言之，是为了判断双方的接收和发送能力都正常从而建立正常的连接。
