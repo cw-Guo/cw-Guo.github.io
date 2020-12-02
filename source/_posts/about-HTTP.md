@@ -30,7 +30,7 @@ Http是一个无状态协议，不记录客户端的相关信息
   发送者用私钥进行签名，接收者用公钥进行验证。
 
 #### Https的连接过程
-![https](https://cdn.jsdelivr.net/gh/cw-Guo/NJU_GPA_Calculator/images/https.jpg)
+![https](https://cdn.jsdelivr.net/gh/cw-Guo/cw-Guo.github.io/source/images/https.jpg)
 - 客户端向服务端发送一个招呼报文（hello），包含自己支持的SSL版本，加密算法等信息。
 - 服务端回复一个招呼报文（hi）包含自己支持的SSL版本，加密算法等信息。
 - 服务端发送自己经过CA认证的公开密钥
@@ -62,10 +62,10 @@ HSTS，web安全协议，核心是一个HTTP响应头，强制拒绝用户的不
 
 #### HTTPS 中间人拦截过程
 中间人拦截过程发生在第一个部分，拦截服务端返回的公钥，构建一对新的密钥伪装成公钥发送给客户端。然后拿到客户端的随机数，再用服务端的公钥进行加密，将密钥发送给服务端。
-![https中间人拦截](https://cdn.jsdelivr.net/gh/cw-Guo/NJU_GPA_Calculator/images/https-attack.jpg)
+![https中间人拦截](https://cdn.jsdelivr.net/gh/cw-Guo/cw-Guo.github.io/source/images/https-attack.jpg)
   ------
   参考文章：
-  访问http如何自动转换为https https://blog.csdn.net/weixin_37720172/article/details/105367086
+  [访问http如何自动转换为https](https://blog.csdn.net/weixin_37720172/article/details/105367086)
 
   https://zhuanlan.zhihu.com/p/79367346
 
