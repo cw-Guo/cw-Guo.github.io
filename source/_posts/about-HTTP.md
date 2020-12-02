@@ -30,13 +30,19 @@ Http是一个无状态协议，不记录客户端的相关信息
   发送者用私钥进行签名，接收者用公钥进行验证。
 
 #### Https的连接过程
-![https](https://cdn.jsdelivr.net/gh/cw-Guo/cw-Guo.github.io/images/https.jpg)
+![https](https://cdn.jsdelivr.net/gh/cw-Guo/cw-Guo.github.io/images/https-2.jpg)
+
+第一次握手，交换基本信息
+
 - 客户端向服务端发送一个招呼报文（hello），包含自己支持的SSL版本，加密算法等信息。
 - 服务端回复一个招呼报文（hi）包含自己支持的SSL版本，加密算法等信息。
 - 服务端发送自己经过CA认证的公开密钥
   - 服务端向CA认证机构发送自己的公开密钥（FPkey）
   - CA认证机构使用自己的私有密钥给FPkey加上签名返回给服务端
 - 服务端发送结束招呼的报文，SSL第一次握手结束。
+
+第二次握手，确定加密策略
+
 - 客户端使用FPkey对自己的随机密码串（Ckey）进行加密并发送给服务端
   - 客户端首先使用CA的公开密钥对FPkey的签名进行认证，确认密钥未被替换
 - 客户端发送提示报文，后续报文将用Ckey进行加密。
@@ -44,9 +50,15 @@ Http是一个无状态协议，不记录客户端的相关信息
   - 后续是否通信取决于客户端的finished报文能否被服务端成功解密
 - 服务端发送提示报文，表示他之后的报文也会用Ckey进行加密
 - 服务端发送finished报文。至此SSL握手结束，成功建立SSL连接。
+
+SSL 建立成功，开始数据传输
+
 - 客户端开始发送http请求报文
   - 建立Tcp连接，开始传输数据
 - 服务端发送http回复报文
+
+断开连接
+
 - 客户端发送断开连接报文，并断开Tcp连接
 
 非对称加密算法用于在握手过程中加密生成的密码；对称加密算法用于对真正传输的数据进行加密；HASH算法用于验证数据的完整性。
@@ -63,6 +75,23 @@ HSTS，web安全协议，核心是一个HTTP响应头，强制拒绝用户的不
 #### HTTPS 中间人拦截过程
 中间人拦截过程发生在第一个部分，拦截服务端返回的公钥，构建一对新的密钥伪装成公钥发送给客户端。然后拿到客户端的随机数，再用服务端的公钥进行加密，将密钥发送给服务端。
 ![https中间人拦截](https://cdn.jsdelivr.net/gh/cw-Guo/cw-Guo.github.io/images/https-attack.jpg)
+
+
+#### GET与POST的区别
+- HTTP GET 方法请求指定的资源。使用 GET 的请求应该只用于获取数据。
+- get是从服务器上获取数据，post是向服务器传送数据
+- HTTP POST 方法 发送数据给服务器. 请求主体的类型由 Content-Type 首部指定.
+- PUT 和POST方法的区别是,PUT方法是幂等的：连续调用一次或者多次的效果相同（无副作用）。连续调用同一个POST可能会带来额外的影响，比如多次提交订单。
+
+GET的语义是请求获取指定的资源。GET方法是安全、幂等、可缓存的（除非有 Cache-ControlHeader的约束）, GET方法的报文主体没有任何语义。POST的语义是根据请求负荷（报文主体）对指定的资源做出处理，具体的处理方式视资源类型而不同。POST不安全，不幂等，（大部分实现）不可缓存。
+
+#### 常见状态码
+- 2xx：操作成功. eg: 200 OK
+- 3xx: 重定向. 301 永久重定向;302暂时重定向; 307
+- 4xx: 客户端错误. 400 bad request; 403 forbidden; 404 not found;
+- 5xxx: 服务端错误. 500 服务器内部错误, 501服务器不可用.
+
+
   ------
   参考文章：
   [访问http如何自动转换为https](https://blog.csdn.net/weixin_37720172/article/details/105367086)
@@ -70,3 +99,4 @@ HSTS，web安全协议，核心是一个HTTP响应头，强制拒绝用户的不
   https://zhuanlan.zhihu.com/p/79367346
 
   https://www.jianshu.com/p/8b9bb785eece
+  https://www.zhihu.com/question/28586791
