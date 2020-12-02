@@ -33,7 +33,10 @@ npm install --save hexo-pdf
 我们部署的workflow也不能自动实现这个更新。
 手动执行deploy 之后，pdf 显示正常。
 
+如果我们相拥自动部署来完成，我们可能解决方式为：
 
+- 修改auto.yml 更新自动部署的步骤，修改reader.ejs的参数
+- 上传node_modules
 
 
 -------
