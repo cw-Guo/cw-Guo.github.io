@@ -1,7 +1,7 @@
 ---
 title: HTTP和HTTPS
 date: 2020-12-02 12:34:04
-tags: Computer Networking, Interview
+tags: Computer Networking
 Hide: false
 ---
 这是一份关于计算机网络的面试向准备笔记
@@ -100,3 +100,4 @@ GET的语义是请求获取指定的资源。GET方法是安全、幂等、可�
 
   https://www.jianshu.com/p/8b9bb785eece
   https://www.zhihu.com/question/28586791
+
