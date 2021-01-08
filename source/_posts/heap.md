@@ -2,7 +2,7 @@
 title: heap
 date: 2020-12-30 22:35:25
 tags: Algorithm
-hide: true
+hide: false
 ---
 
 本篇文章主要基于一道算法题，梳理一下堆的相关知识。
@@ -178,7 +178,7 @@ class Heap:
         out.append(heap.pop())
       return out
   ```
-  
+
 ##### Inplace 的堆排序
 - 堆的特性
   如果A[0, end) 是一个堆，从堆中获取最小元素并删除后，元素存放在A[0, end - 1), 而 A[end - 1] 则成为一个空位（但是它在最右边）
