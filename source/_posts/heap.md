@@ -59,8 +59,134 @@ eg: 3+1（4）的二进制表示为：100，也即，从根节点出发连续左
   在二叉树中搜索会很快，但是在堆中搜索会很慢。
   使用堆的目的是将最大（或者最小）的节点放在最前面，从而快速的进行相关插入、删除操作。
 
+
+#### 堆的实现
+``` python
+class Heap:
+    def __init__(self, desc = False): # 初始化，构建一个小顶堆
+      self.heap = []
+      self.desc = desc
+    
+    @property
+    def size(self):
+      return len(self.heap)
+
+    def top(self):
+    """
+        返回堆顶
+    """
+      if self.size:
+        return self.heap[0]
+      return None
+    
+    def push(self, item):
+      """
+        向堆中添加一个元素
+      """
+      self.heap.append(item)
+      self._sift_up(self.size - 1)
+    
+    def pop(self):
+      """
+        弹出堆顶
+        第一步，记录堆顶元素的值
+        第二步，交换堆顶元素与末尾元素
+        第三步，删除数组末尾元素
+        第四步，新的堆顶元素向下调整
+        第五步，返回答案
+      """
+      self._swap(0, self.size - 1)
+      item = self.heap.pop()
+      self._sift_down(0)
+      return item
+
+    def _smaller(self, lhs, rhs):
+      """ RHS: Right-Hand-Side
+          LHS: Left-Hand-Side
+          此处的逻辑和 sift up 和 sift down 相关
+      """
+
+      return lhs > rhs if self.desc else lhs < rhs
+
+    def _sift_up(self, index):
+      """
+      向上调整。
+      在末端插入元素时调用这个函数
+      对于小根堆：如果子节点小于父节点 那么需要交换 如上：返回 lhs < rhs
+      对于大根堆，如果子节点大于父节点 那么需要交换
+      """
+      while index: # start from self.size - 1
+        parent = (index - 1)// 2
+        if self._smaller(self.heap[parent], self.heap[index]): # 子节点大 不需要操作
+          break
+        
+        self._swap(parent, index)
+        index = parent
+ 
+    def _sift_down(self, index):
+      """
+      向下调整。
+      在pop的时候调用这个函数
+      对于小根堆：如果子节点小于父节点 那么需要交换 如上：返回 lhs < rhs
+      对于大根堆，如果子节点大于父节点 那么需要交换
+      """
+      while 2 * index + 1 < self.size:
+        smallest = index 
+        left = 2 * index + 1
+        right = 2 * index + 2
+
+        if self._smaller(self.heap[left], self.heap[smallest]):
+          smallest = left
+        if right < self.size and self._smaller(self.heap[right], self.heap[smallest]):
+          smallest = right
+        
+        if smallest == index:
+          break
+        
+        self._swap(index, smallest) # 交换之后，index 的位置成了最小的，但是smallest 位置的大小不确定
+        index = smallest
+
+    def _swap(self,i ,j):
+      self.heap[i], self.heap[j] = self.heap[j], self.heap[i]
+
+```
+
 #### 堆排序
 堆排序（Heapsort）是指利用堆这种数据结构所设计的一种排序算法。堆排序可以说是一种利用堆的概念来排序的选择排序。
+由于堆的内部顺序并不确定，确定的只有堆顶。
+
+##### 直观方法
+最基本的方法是：
+ - 构造得到一个堆
+ - 不断从堆中pop出堆顶
+ - 将上述值存下来，最终输出
+
+缺点：需要额外的内存存储。
+
+  ``` python
+    def heap_sort(lst):
+      
+      if not lst:
+        return lst
+      out = []
+      # construct a heap
+      heap = Heap()
+      for elem in lst:
+        heap.push(elem)
+      
+      while heap.size > 0:
+        out.append(heap.pop())
+      return out
+  ```
+  
+##### Inplace 的堆排序
+- 堆的特性
+  如果A[0, end) 是一个堆，从堆中获取最小元素并删除后，元素存放在A[0, end - 1), 而 A[end - 1] 则成为一个空位（但是它在最右边）
+
+为了能够充分利用这个空位：
+- 建立一个最大堆
+- 不断获取最大值，把这个值存放在堆最后的空位上：这样以后，我们的前半部分是一个堆，后半部分是一个有序序列
+- 堆为空的时候，数组就是一个排好序的序列
 
 
 
@@ -73,8 +199,11 @@ leetcode 347
 前k大：构建一个k个数的最小堆，当读取的数大于根节点时，替换根节点，重新塑造最小堆
 
 #### 参考文章
-[数据结构：堆]（https://www.jianshu.com/p/6b526aa481b1）
-[]（https://blog.csdn.net/lmy_xxn/article/details/103800683）
-[]（https://www.runoob.com/python3/python-heap-sort.html）
-[](https://www.cnblogs.com/shiqi17/p/9694938.html)
-[](https://www.jianshu.com/p/d174f1862601)
+[数据结构：堆](https://www.jianshu.com/p/6b526aa481b1)
+[leetcode 1046 题解, by Hao Kun Yang](https://leetcode-cn.com/problems/last-stone-weight/solution/python-zui-da-dui-diao-ku-shou-xie-shi-x-utdj/)
+[python手写堆（leetcode347）](https://blog.csdn.net/lmy_xxn/article/details/103800683)
+[Python 堆排序](https://www.runoob.com/python3/python-heap-sort.html)
+[堆排、python实现堆排](https://www.cnblogs.com/shiqi17/p/9694938.html)
+[堆排序的Python实现](https://www.jianshu.com/p/d174f1862601)
+
+[python 装饰器](https://www.liaoxuefeng.com/wiki/1016959663602400/1017451662295584)
