@@ -1,5 +1,5 @@
 ---
-title: DisjointSetUnion
+title: 并查集的二三事
 date: 2021-01-11 20:24:41
 tags: Union Find
 ---
