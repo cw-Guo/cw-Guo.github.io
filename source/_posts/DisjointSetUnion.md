@@ -87,9 +87,88 @@ def union(self, p, q):
 为了优化，我们用一个字典存储每个树的节点数目， 小树接到大树下面 比较平衡
 
 
+#### 带权并查集
 
-###### 压缩路径
+#### 进阶： Kruskal算法，最小生成树
+这部分基于 Leetcode：1584. [连接所有点的最小费用](https://leetcode-cn.com/problems/min-cost-to-connect-all-points)
 
+##### 题目
+给你一个points 数组，表示 2D 平面上的一些点，其中 points[i] = [xi, yi] 。
+
+连接点 [xi, yi] 和点 [xj, yj] 的费用为它们之间的 曼哈顿距离 ：|xi - xj| + |yi - yj| ，其中 |val| 表示 val 的绝对值。
+
+请你返回将所有点连接的最小总费用。只有任意两点之间 有且仅有 一条简单路径时，才认为所有点都已连接。
+
+#### 分析
+第一想法，考虑是否能够用递归。但是这个问题并不具有子结构，因为任意一个节点的加入和删除，都会影响到解。同样的由于不具有子结构，所以动态规划也不能使用。
+
+能够满足任意两点之间有且仅有一条简单路径只有树，且这棵树包含 n 个节点。我们称这棵树为给定的图的生成树，其中总权值最小的生成树，我们称其为最小生成树
+
+Kruskal 算法是一种常见并且好写的最小生成树算法。该算法的基本思想是从小到大加入边，是一个贪心算法。
+其算法流程为：
+- 将图 G={V,E} 所有的边从小到大进行排序
+- 初始化图为 {V, ∅}, 扫描步骤1中的边，如果连接了两个不连通的顶点，那么我们把他加入到图中去。
+- 直到最后结束
+
+这边我们会用到并查集维护点的连通性。
+整体思路为：我们首先将这张完全图中的边全部提取到边集数组中，然后对所有边进行排序，从小到大进行枚举，每次贪心选边加入答案。使用并查集维护连通性，若当前边两端不连通即可选择这条边
+
+##### 代码
+```python
+class DisjointSetUnion:
+    def __init__(self, n):
+        self.n = n
+        self.rank = [1]*n # 重量
+        self.f = list(range(n)) # father
+    
+    def find(self, x):
+        if self.f[x] == x:
+            return x
+        self.f[x] = self.find(self.f[x])
+        return self.f[x]
+        
+    def unionSet(self, x, y):
+        root_x = self.find(x)
+        root_y = self.find(y)
+        if root_x == root_y:
+            return False
+        if self.rank[root_x] < self.rank[root_y]:
+            self.f[root_x] = root_y
+            self.rank[root_y] += self.rank[root_x]
+        else:
+            self.f[root_y] = root_x
+            self.rank[root_x] += self.rank[root_y]
+        self.n -= 1
+        return True
+
+class Solution:
+    def minCostConnectPoints(self, points):
+        distance = lambda x,y: abs(points[x][0] - points[y][0]) + abs(points[x][1] - points[y][1])
+        
+        n = len(points)
+        dsu = DisjointSetUnion(n)
+        edges = list()
+
+        for i in range(n):
+            for j in range(i + 1, n):
+                edges.append((dist(i, j), i, j))
+        
+        edges.sort()
+
+        res, num = 0, 1
+        for length, x, y in edges:
+            if dsu.unionSet(x, y):
+                res += length
+                num += 1
+                if num == n:
+                    break
+        
+        return res
+
+```
+
+
+#### 参考资料
 leetcode DisjointSetUnion
 
 https://leetcode-cn.com/problems/smallest-string-with-swaps/solution/1202-jiao-huan-zi-fu-chuan-zhong-de-yuan-wgab/
