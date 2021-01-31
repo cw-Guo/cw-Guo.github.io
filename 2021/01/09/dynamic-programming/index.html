@@ -1,0 +1,144 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#0078E7"><meta name="author" content="cwGuo"><meta name="copyright" content="cwGuo"><meta name="generator" content="Hexo 5.3.0"><meta name="theme" content="hexo-theme-yun"><title>动态规划的二三事 | 庄生晓曼</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@900&amp;family=Source+Code+Pro&amp;display=swap" media="none" onload="this.media='all'"><script src="//at.alicdn.com/t/font_1140697_stqaphw3j4.js" async></script><script src="https://cdn.jsdelivr.net/npm/scrollreveal/dist/scrollreveal.min.js" defer></script><script>document.addEventListener("DOMContentLoaded", () => {
+  [".post-card",".post-content img"].forEach((target)=> {
+    ScrollReveal().reveal(target);
+  })
+});
+</script><link rel="shortcut icon" type="image/svg+xml" href="/favicon.ico"><link rel="mask-icon" href="/favicon.ico" color="#0078E7"><link rel="alternate icon" href="/yun.ico"><link rel="preload" href="/css/hexo-theme-yun.css" as="style"><link rel="preload" href="/js/utils.js" as="script"><link rel="preload" href="/js/hexo-theme-yun.js" as="script"><link rel="prefetch" href="/js/sidebar.js" as="script"><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="/css/hexo-theme-yun.css"><script id="yun-config">
+    const Yun = window.Yun || {};
+    window.CONFIG = {"root":"/","title":"庄生晓曼","version":"0.9.1","anonymous_image":"https://cdn.jsdelivr.net/gh/YunYouJun/cdn/img/avatar/none.jpg","say":{"api":"https://v1.hitokoto.cn","hitokoto":true},"fireworks":{"colors":["102, 167, 221","62, 131, 225","33, 78, 194"]}};
+  </script><script>(function(){
+  var bp = document.createElement('script');
+  var curProtocol = window.location.protocol.split(':')[0];
+  if (curProtocol === 'https') {
+    bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else {
+    bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(bp, s);
+})();</script><meta name="description" content="这篇文章尝试整理一些简单的动态规划相关知识。 由头： 从一道股票题说起Leetcode 123. 买卖股票的最佳时机 III 给定一个数组，它的第 i 个元素是一支给定的股票在第 i 天的价格。设计一个算法来计算你所能获取的最大利润。你最多可以完成 两笔 交易。注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。 股票题的解由于有2次交易机会，我们可以认为每一天都可以有以下五种状态">
+<meta property="og:type" content="article">
+<meta property="og:title" content="动态规划的二三事">
+<meta property="og:url" content="https://cw-guo.github.io/2021/01/09/dynamic-programming/index.html">
+<meta property="og:site_name" content="庄生晓曼">
+<meta property="og:description" content="这篇文章尝试整理一些简单的动态规划相关知识。 由头： 从一道股票题说起Leetcode 123. 买卖股票的最佳时机 III 给定一个数组，它的第 i 个元素是一支给定的股票在第 i 天的价格。设计一个算法来计算你所能获取的最大利润。你最多可以完成 两笔 交易。注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。 股票题的解由于有2次交易机会，我们可以认为每一天都可以有以下五种状态">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-01-09T09:04:39.000Z">
+<meta property="article:modified_time" content="2021-01-31T08:15:43.259Z">
+<meta property="article:author" content="cwGuo">
+<meta property="article:tag" content="dynamic programming">
+<meta name="twitter:card" content="summary"><script src="/js/ui/mode.js"></script></head><body><script defer src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script defer src="/js/ui/fireworks.js"></script><canvas class="fireworks"></canvas><div class="container"><a class="sidebar-toggle hty-icon-button" id="menu-btn"><div class="hamburger hamburger--spin" type="button"><span class="hamburger-box"><span class="hamburger-inner"></span></span></div></a><div class="sidebar-toggle sidebar-overlay"></div><aside class="sidebar"><script defer src="/js/sidebar.js"></script><ul class="sidebar-nav"><li class="sidebar-nav-item sidebar-nav-toc hty-icon-button sidebar-nav-active" data-target="post-toc-wrap" title="Table of Contents"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-list-ordered"></use></svg></li><li class="sidebar-nav-item sidebar-nav-overview hty-icon-button" data-target="site-overview-wrap" title="Overview"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-passport-line"></use></svg></li></ul><div class="sidebar-panel" id="site-overview-wrap"><div class="site-info mickey-mouse"><a class="site-author-avatar" href="/about/" title="cwGuo"><img width="96" loading="lazy" src="https://cdn.jsdelivr.net/gh/cw-Guo/cw-Guo.github.io@hexo/source/images/myself.jpg" alt="cwGuo"></a><div class="site-author-name"><a href="/about/">cwGuo</a></div><a class="site-name" href="/about/site.html">庄生晓曼</a><sub class="site-subtitle">Juicer's blog</sub><div class="site-desciption">及 时 行 乐</div></div><nav class="site-state"><a class="site-state-item hty-icon-button icon-home" href="/" title="Home"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home-4-line"></use></svg></span></a><div class="site-state-item"><a href="/archives/" title="Archives"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-archive-line"></use></svg></span><span class="site-state-item-count">14</span></a></div><a class="site-state-item hty-icon-button" target="_blank" rel="noopener" href="https://yun.yunyoujun.cn" title="文档"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-settings-line"></use></svg></span></a></nav><hr style="margin-bottom:0.5rem"><div class="links-of-author"><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://github.com/cw-Guo" title="GitHub" target="_blank" style="color:#6e5494"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-github-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="mailto:tan0723mac@163.com" title="E-Mail" target="_blank" style="color:#8E71C1"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-mail-line"></use></svg></a></div><hr style="margin:0.5rem 1rem"><div class="links"><a class="links-item hty-icon-button" href="/profile" title="Academic CV" style="color:undefined"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-genderless-line"></use></svg></a></div><br><a class="links-item hty-icon-button" id="toggle-mode-btn" href="javascript:;" title="Mode" style="color: #f1cb64"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-contrast-2-line"></use></svg></a></div><div class="sidebar-panel sidebar-panel-active" id="post-toc-wrap"><div class="post-toc"><div class="post-toc-content"><ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%B1%E5%A4%B4%EF%BC%9A-%E4%BB%8E%E4%B8%80%E9%81%93%E8%82%A1%E7%A5%A8%E9%A2%98%E8%AF%B4%E8%B5%B7"><span class="toc-number">1.</span> <span class="toc-text">由头： 从一道股票题说起</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%82%A1%E7%A5%A8%E9%A2%98%E7%9A%84%E8%A7%A3"><span class="toc-number">2.</span> <span class="toc-text">股票题的解</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92"><span class="toc-number">3.</span> <span class="toc-text">动态规划</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%8F%AB%E2%80%9Cdynamic-programming%E2%80%9D%EF%BC%9F"><span class="toc-number">3.1.</span> <span class="toc-text">为什么叫“dynamic programming”？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9C%AC%E8%B4%A8"><span class="toc-number">3.2.</span> <span class="toc-text">本质</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%87%AA%E9%A1%B6%E5%90%91%E4%B8%8B%EF%BC%9A%E7%94%A8%E9%80%92%E5%BD%92%E6%9D%A5%E5%AE%8C%E6%88%90%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="toc-number">3.3.</span> <span class="toc-text">自顶向下：用递归来完成动态规划的过程</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%87%AA%E5%BA%95%E5%90%91%E4%B8%8A%EF%BC%9A%E7%94%A8%E8%BF%AD%E4%BB%A3%E8%BF%9B%E8%A1%8C"><span class="toc-number">3.4.</span> <span class="toc-text">自底向上：用迭代进行</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E8%82%A1%E7%A5%A8%E9%A2%98%EF%BC%8C%E8%82%A1%E7%A5%A8%E9%A2%98%E7%9A%84%E5%8F%98%E7%A7%8D"><span class="toc-number">4.</span> <span class="toc-text">其他股票题，股票题的变种</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2"><span class="toc-number">5.</span> <span class="toc-text">最长回文子串</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">6.</span> <span class="toc-text">参考资料</span></a></li></ol></div></div></div></aside><main class="sidebar-translate" id="content"><div id="post"><article class="post-block" itemscope itemtype="https://schema.org/Article"><link itemprop="mainEntityOfPage" href="https://cw-guo.github.io/2021/01/09/dynamic-programming/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="cwGuo"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="庄生晓曼"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">动态规划的二三事<a class="post-edit-link" href="https://github.com/cw-Guo/cw-Guo.github.io/tree/hexo/source/_posts/dynamic-programming.md" target="_blank" title="Edit this post" rel="noopener"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-edit-line"></use></svg></a></h1><div class="post-meta"><div class="post-time" style="display:block"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-line"></use></svg></span> <time title="Created: 2021-01-09 17:04:39" itemprop="dateCreated datePublished" datetime="2021-01-09T17:04:39+08:00">2021-01-09</time><span class="post-meta-divider">-</span><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-2-line"></use></svg></span> <time title="Modified: 2021-01-31 16:15:43" itemprop="dateModified" datetime="2021-01-31T16:15:43+08:00">2021-01-31</time></div><span class="post-count"><span class="post-symbolcount"><span class="post-meta-item-icon" title="Reading time"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-timer-line"></use></svg></span> <span title="Reading time">23 mins.</span></span></span><div class="post-classify"><span class="post-tag"><a class="tag" href="/tags/dynamic-programming/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">dynamic programming</span></a></span></div></div></header><section class="post-body" itemprop="articleBody"><div class="post-content post-markdown"><p>这篇文章尝试整理一些简单的动态规划相关知识。</p>
+<h4 id="由头：-从一道股票题说起"><a href="#由头：-从一道股票题说起" class="headerlink" title="由头： 从一道股票题说起"></a>由头： 从一道股票题说起</h4><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iii/">Leetcode 123</a>. 买卖股票的最佳时机 III</p>
+<p>给定一个数组，它的第 i 个元素是一支给定的股票在第 i 天的价格。设计一个算法来计算你所能获取的最大利润。你最多可以完成 两笔 交易。<br>注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。</p>
+<h4 id="股票题的解"><a href="#股票题的解" class="headerlink" title="股票题的解"></a>股票题的解</h4><p>由于有2次交易机会，<br>我们可以认为每一天都可以有以下五种状态： </p>
+<ul>
+<li>手上没有股票，但是有2次交易机会，可以买入  </li>
+<li>手上有股票，并且还剩下一次交易机会，可以卖出</li>
+<li>手上没有股票，但是有一次机会，可以买入</li>
+<li>手上有股票，并且还剩下零次交易机会，可以卖出</li>
+<li>手上没有股票，但是没有交易机会，此时等于 i-1天的最高收益 （收益完全由昨天的收益确定）<br>其中最后一种情况对我们意义不大，因为它的可能的最大收益完全由前一天决定</li>
+</ul>
+<p>我们这里用四个变量记录这四个有意义的状态。</p>
+<ul>
+<li>buy1: 执行第一次买</li>
+<li>sell1：执行第一次卖</li>
+<li>buy2： 执行第二次买</li>
+<li>sell2：执行第二次卖</li>
+</ul>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">maxProfit</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> prices<span class="token punctuation">:</span> List<span class="token punctuation">[</span><span class="token builtin">int</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">int</span><span class="token punctuation">:</span>
+    n <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>prices<span class="token punctuation">)</span>
+
+    buy1 <span class="token operator">=</span> buy2 <span class="token operator">=</span> <span class="token operator">-</span> prices<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token comment"># 因为要购买股票所以收益是负的</span>
+    sell1 <span class="token operator">=</span> sell2 <span class="token operator">=</span> <span class="token number">0</span>
+
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token comment"># 从第二天开始</span>
+        buy1 <span class="token operator">=</span> <span class="token builtin">max</span><span class="token punctuation">(</span>buy1<span class="token punctuation">,</span> <span class="token operator">-</span> prices<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment"># 负的所以用max 这样得到的是价格最低的，如果今天的价格更低，那么我买入的价格以今天的为主</span>
+        sell1 <span class="token operator">=</span> <span class="token builtin">max</span><span class="token punctuation">(</span>sell1<span class="token punctuation">,</span> prices<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">+</span> buy1<span class="token punctuation">)</span>
+        buy2 <span class="token operator">=</span> <span class="token builtin">max</span><span class="token punctuation">(</span>buy2<span class="token punctuation">,</span> sell1 <span class="token operator">-</span> prices<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment"># 第二次购买，我们以第一次卖出作为“本钱”</span>
+        sell2 <span class="token operator">=</span> <span class="token builtin">max</span><span class="token punctuation">(</span>sell2<span class="token punctuation">,</span> prices<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">+</span> buy2<span class="token punctuation">)</span> 
+    
+    <span class="token keyword">return</span> sell2
+</code></pre>
+<h4 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h4><h5 id="为什么叫“dynamic-programming”？"><a href="#为什么叫“dynamic-programming”？" class="headerlink" title="为什么叫“dynamic programming”？"></a>为什么叫“dynamic programming”？</h5><blockquote>
+<p>An interesting question is, ‘Where did the name, dynamic programming, come from?’The 1950s were not good years for mathematical research. We had a very interesting gentleman in Washington named Wilson. He was Secretary of Defense, and he actually had a pathological fear and hatred of the word, research. I’m not using the term lightly; I’m using it precisely. His face would suffuse, he would turn red, and he would get violent if people used the term, research, in his presence. You can imagine how he felt, then, about the term, mathematical. The RAND Corporation was employed by the Air Force, and the Air Force had Wilson as its boss, essentially. Hence, I felt I had to do something to shield Wilson and the Air Force from the fact that I was really doing mathematics inside the RAND Corporation. What title, what name, could I choose? In the first place I was interested in planning, in decision making, in thinking. But planning, is not a good word for various reasons. I decided therefore to use the word,‘programming.’ I wanted to get across the idea that this was dynamic, this was multistage, this was time-varying—I thought, let’s kill two birds with one stone. Let’s take a word that has an absolutely precise meaning, namely dynamic, in the classical physical sense. It also has a very interesting property as an adjective, and that is it’s impossible to use the word, dynamic, in a pejorative sense. Try thinking of some combination that will possibly give it a pejorative meaning. It’s impossible. Thus, I thought dynamic programming was a good name. It was something not even a Congressman could object to. So I used it as an umbrella for my activities.</p>
+</blockquote>
+<h5 id="本质"><a href="#本质" class="headerlink" title="本质"></a>本质</h5><p>动态规划问题的一般形式是求最值。比如求最长递增子序列等等<br>求最值的核心问题是 穷举，把所有可能结果都穷举一遍，从而找到最值。但这样做明显效率不高，动态规划就是在穷举上进行优化。<br>将问题分解成为具有重叠子结构的问题。从子结果来得到最终的结构。</p>
+<p>所以使用动态规划的关键就在于如何将问题分解。</p>
+<ul>
+<li>重叠子问题</li>
+<li>最优子结构</li>
+<li>状态转移方程。</li>
+</ul>
+<p>可以进一步总结一些需要思考的点：</p>
+<ul>
+<li>这个问题的base case 是什么</li>
+<li>这个问题的“状态”是什么</li>
+<li>对于每个“状态”，状态之间的联系是什么，可以通过什么操作进行状态间的转换</li>
+<li>如何使用“备忘录”或者是 dp table存放这些状态的结果</li>
+</ul>
+<p>归纳法的思想和DP很像，都是当前步骤建立在之前步骤的解的基础上<br>用之前累积下来的结果，去推测下一步会发生什么</p>
+<h5 id="自顶向下：用递归来完成动态规划的过程"><a href="#自顶向下：用递归来完成动态规划的过程" class="headerlink" title="自顶向下：用递归来完成动态规划的过程"></a>自顶向下：用递归来完成动态规划的过程</h5><p>最典型的问题是斐波那契数列。<br>通项公式： f(n) = f(n - 1) + f(n - 2)</p>
+<p>实际上就成了动态规划问题的状态转移方程。<br>一般解法用递归完成：</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">fib</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment"># base case:</span>
+    <span class="token keyword">if</span> n <span class="token operator">==</span> <span class="token number">0</span>：
+        <span class="token keyword">return</span> <span class="token number">0</span>
+    <span class="token keyword">if</span> n <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token number">1</span>
+    <span class="token keyword">return</span> fib<span class="token punctuation">(</span>n <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">+</span> fib<span class="token punctuation">(</span>n <span class="token operator">-</span> <span class="token number">2</span><span class="token punctuation">)</span>
+</code></pre>
+<p>但实际上我们可以发现，有些斐波那契值被多次计算了。如果我们在内存中用空间换时间，用一个数组存放目前已经计算过的值，那么可以省下非常多的时间。</p>
+<pre class="language-python" data-language="python"><code class="language-python">self<span class="token punctuation">.</span>cache <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token number">0</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">&#125;</span>
+<span class="token keyword">def</span> <span class="token function">fib</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> n <span class="token keyword">in</span> self<span class="token punctuation">.</span>cache<span class="token punctuation">:</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>cache<span class="token punctuation">[</span>n<span class="token punctuation">]</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        result <span class="token operator">=</span> self<span class="token punctuation">.</span>fib<span class="token punctuation">(</span>n <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">+</span> self<span class="token punctuation">.</span>fib<span class="token punctuation">(</span>n <span class="token operator">-</span> <span class="token number">2</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>cache<span class="token punctuation">[</span>n<span class="token punctuation">]</span> <span class="token operator">=</span> result
+        <span class="token keyword">return</span> result
+    </code></pre>
+<p>为什么称之为自顶向下呢，是说我们从一个规模较大的问题，逐步分解成规模比较小的问题，直到分解到base case。<br>一般这种思路也和递归同时出现。</p>
+<h5 id="自底向上：用迭代进行"><a href="#自底向上：用迭代进行" class="headerlink" title="自底向上：用迭代进行"></a>自底向上：用迭代进行</h5><p>递归的方法有很多优点。比如说：</p>
+<ul>
+<li>思路简单，容易形成算法</li>
+<li>在一些数据结构中使用比较方便。比如说树形结构。</li>
+</ul>
+<p>但是它也有几个缺点：</p>
+<ul>
+<li>每一次函数调用，都需要在内存栈中分配空间以保存参数、返回地址以及临时变量，而往栈中压入数据和弹出数据都需要时间。</li>
+<li>上述的函数调用栈有可能导致溢出</li>
+</ul>
+<p>所以我们一般采用自底向上的想法。从规模最小的问题出发，往上推直到推到我们想要的答案。<br>比如说我们的斐波那契数列可以这样求解:</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">fib</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> n <span class="token operator">&lt;</span> <span class="token number">2</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> n
+    
+    p <span class="token operator">=</span> <span class="token number">0</span>
+    q <span class="token operator">=</span> <span class="token number">0</span>
+    result <span class="token operator">=</span> <span class="token number">1</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> n <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        p<span class="token punctuation">,</span> q <span class="token operator">=</span> q<span class="token punctuation">,</span> result
+        result <span class="token operator">=</span> p <span class="token operator">+</span> q
+    <span class="token keyword">return</span> result
+</code></pre>
+<p>值得一提的是，斐波那契数列问题本质上不是一个动态规划问题，只不过其通项公式恰巧满足了”状态转移方程”的形式。<br>典型的动态规划问题是求解最值问题。</p>
+<h4 id="其他股票题，股票题的变种"><a href="#其他股票题，股票题的变种" class="headerlink" title="其他股票题，股票题的变种"></a>其他股票题，股票题的变种</h4><p>to be finished</p>
+<h4 id="最长回文子串"><a href="#最长回文子串" class="headerlink" title="最长回文子串"></a>最长回文子串</h4><p>to be finished</p>
+<h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4><p><a target="_blank" rel="noopener" href="https://www.1point3acres.com/bbs/thread-689633-1-1.html">为什么叫“动态规划”</a><br><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iii/solution/mai-mai-gu-piao-de-zui-jia-shi-ji-iii-by-wrnt/">Leetcode 123 买卖股票的最佳时机 III</a></p>
+</div><ul class="post-copyright"><li class="post-copyright-author"><strong>Post author: </strong>cwGuo</li><li class="post-copyright-link"><strong>Post link: </strong><a href="https://cw-guo.github.io/2021/01/09/dynamic-programming/" title="动态规划的二三事">https://cw-guo.github.io/2021/01/09/dynamic-programming/</a></li><li class="post-copyright-license"><strong>Copyright Notice: </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" title="CC BY-NC-SA 4.0 "><svg class="icon"><use xlink:href="#icon-creative-commons-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-by-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-nc-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-sa-line"></use></svg></a> unless stating additionally.</li></ul></section></article><div class="post-nav"><div class="post-nav-item"><a class="post-nav-prev" href="/2021/01/11/DisjointSetUnion/" rel="prev" title="并查集的二三事"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-left-s-line"></use></svg><span class="post-nav-text">并查集的二三事</span></a></div><div class="post-nav-item"><a class="post-nav-next" href="/2020/12/30/heap/" rel="next" title="heap"><span class="post-nav-text">heap</span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-right-s-line"></use></svg></a></div></div></div><div id="comment"><div class="comment-tooltip text-center"><span>点击按钮跳转 GitHub Issues 评论。</span><br><span>若没有本文 Issue，您可以使用 Comment 模版新建。</span><br><a class="hty-button hty-button--raised" id="github-issues" target="_blank" rel="noopener" href="https://github.com/YunYouJun/yunyoujun.github.io/issues?q=is:issue+动态规划的二三事">GitHub Issues</a></div></div></main><footer class="sidebar-translate" id="footer"><div class="copyright"><span>&copy; 2020 – 2021 </span><span class="with-love" id="animate"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-heart-line"></use></svg></span><span class="author"> cwGuo</span></div><div class="powered"><span>Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> v5.3.0</span><span class="footer-separator">|</span><span>Theme - <a rel="noopener" href="https://github.com/YunYouJun/hexo-theme-yun" target="_blank"><span>Yun</span></a> v0.9.1</span></div><div class="live_time"><span>本博客已运行</span><span id="display_live_time"></span><script>function blog_live_time() {
+  window.setTimeout(blog_live_time, 1000);
+  const start = new Date('2020-06-28T00:00:00');
+  const now = new Date();
+  const timeDiff = (now.getTime() - start.getTime());
+  const msPerMinute = 60 * 1000;
+  const msPerHour = 60 * msPerMinute;
+  const msPerDay = 24 * msPerHour;
+  const passDay = Math.floor(timeDiff / msPerDay);
+  const passHour = Math.floor((timeDiff % msPerDay) / 60 / 60 / 1000);
+  const passMinute = Math.floor((timeDiff % msPerHour) / 60 / 1000);
+  const passSecond = Math.floor((timeDiff % msPerMinute) / 1000);
+  display_live_time.innerHTML = " " + passDay + " 天 " + passHour + " 小时 " + passMinute + " 分 " + passSecond + " 秒";
+}
+blog_live_time();
+</script></div></footer><a class="hty-icon-button" id="goUp" aria-label="back-to-top" href="#"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-up-s-line"></use></svg><svg class="progress-circle-container" viewBox="0 0 100 100"><circle class="progress-circle" id="progressCircle" cx="50" cy="50" r="48" fill="none" stroke="#0078E7" stroke-width="2" stroke-linecap="round"></circle></svg></a></div><script defer src="/js/utils.js"></script><script defer src="/js/hexo-theme-yun.js"></script></body></html>

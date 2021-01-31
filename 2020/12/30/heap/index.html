@@ -1,0 +1,201 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#0078E7"><meta name="author" content="cwGuo"><meta name="copyright" content="cwGuo"><meta name="generator" content="Hexo 5.3.0"><meta name="theme" content="hexo-theme-yun"><title>heap | 庄生晓曼</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@900&amp;family=Source+Code+Pro&amp;display=swap" media="none" onload="this.media='all'"><script src="//at.alicdn.com/t/font_1140697_stqaphw3j4.js" async></script><script src="https://cdn.jsdelivr.net/npm/scrollreveal/dist/scrollreveal.min.js" defer></script><script>document.addEventListener("DOMContentLoaded", () => {
+  [".post-card",".post-content img"].forEach((target)=> {
+    ScrollReveal().reveal(target);
+  })
+});
+</script><link rel="shortcut icon" type="image/svg+xml" href="/favicon.ico"><link rel="mask-icon" href="/favicon.ico" color="#0078E7"><link rel="alternate icon" href="/yun.ico"><link rel="preload" href="/css/hexo-theme-yun.css" as="style"><link rel="preload" href="/js/utils.js" as="script"><link rel="preload" href="/js/hexo-theme-yun.js" as="script"><link rel="prefetch" href="/js/sidebar.js" as="script"><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="/css/hexo-theme-yun.css"><script id="yun-config">
+    const Yun = window.Yun || {};
+    window.CONFIG = {"root":"/","title":"庄生晓曼","version":"0.9.1","anonymous_image":"https://cdn.jsdelivr.net/gh/YunYouJun/cdn/img/avatar/none.jpg","say":{"api":"https://v1.hitokoto.cn","hitokoto":true},"fireworks":{"colors":["102, 167, 221","62, 131, 225","33, 78, 194"]}};
+  </script><script>(function(){
+  var bp = document.createElement('script');
+  var curProtocol = window.location.protocol.split(':')[0];
+  if (curProtocol === 'https') {
+    bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else {
+    bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(bp, s);
+})();</script><meta name="description" content="本篇文章主要基于一道算法题，梳理一下堆的相关知识。 Leetcode 1046 最后一块石头的重量这里可以看到原题。 有一堆石头，每块石头的重量都是正整数。 每一回合，从中选出两块 最重的 石头，然后将它们一起粉碎。假设石头的重量分别为 x 和 y，且 x &lt;&#x3D; y。那么粉碎的可能结果如下：  如果 x &#x3D;&#x3D; y，那么两块石头都会被完全粉碎； 如果 x !&#x3D; y，那么重量为 x 的石头将会完">
+<meta property="og:type" content="article">
+<meta property="og:title" content="heap">
+<meta property="og:url" content="https://cw-guo.github.io/2020/12/30/heap/index.html">
+<meta property="og:site_name" content="庄生晓曼">
+<meta property="og:description" content="本篇文章主要基于一道算法题，梳理一下堆的相关知识。 Leetcode 1046 最后一块石头的重量这里可以看到原题。 有一堆石头，每块石头的重量都是正整数。 每一回合，从中选出两块 最重的 石头，然后将它们一起粉碎。假设石头的重量分别为 x 和 y，且 x &lt;&#x3D; y。那么粉碎的可能结果如下：  如果 x &#x3D;&#x3D; y，那么两块石头都会被完全粉碎； 如果 x !&#x3D; y，那么重量为 x 的石头将会完">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-12-30T14:35:25.000Z">
+<meta property="article:modified_time" content="2021-01-31T08:15:43.259Z">
+<meta property="article:author" content="cwGuo">
+<meta property="article:tag" content="Algorithm">
+<meta name="twitter:card" content="summary"><script src="/js/ui/mode.js"></script></head><body><script defer src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script defer src="/js/ui/fireworks.js"></script><canvas class="fireworks"></canvas><div class="container"><a class="sidebar-toggle hty-icon-button" id="menu-btn"><div class="hamburger hamburger--spin" type="button"><span class="hamburger-box"><span class="hamburger-inner"></span></span></div></a><div class="sidebar-toggle sidebar-overlay"></div><aside class="sidebar"><script defer src="/js/sidebar.js"></script><ul class="sidebar-nav"><li class="sidebar-nav-item sidebar-nav-toc hty-icon-button sidebar-nav-active" data-target="post-toc-wrap" title="Table of Contents"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-list-ordered"></use></svg></li><li class="sidebar-nav-item sidebar-nav-overview hty-icon-button" data-target="site-overview-wrap" title="Overview"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-passport-line"></use></svg></li></ul><div class="sidebar-panel" id="site-overview-wrap"><div class="site-info mickey-mouse"><a class="site-author-avatar" href="/about/" title="cwGuo"><img width="96" loading="lazy" src="https://cdn.jsdelivr.net/gh/cw-Guo/cw-Guo.github.io@hexo/source/images/myself.jpg" alt="cwGuo"></a><div class="site-author-name"><a href="/about/">cwGuo</a></div><a class="site-name" href="/about/site.html">庄生晓曼</a><sub class="site-subtitle">Juicer's blog</sub><div class="site-desciption">及 时 行 乐</div></div><nav class="site-state"><a class="site-state-item hty-icon-button icon-home" href="/" title="Home"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home-4-line"></use></svg></span></a><div class="site-state-item"><a href="/archives/" title="Archives"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-archive-line"></use></svg></span><span class="site-state-item-count">14</span></a></div><a class="site-state-item hty-icon-button" target="_blank" rel="noopener" href="https://yun.yunyoujun.cn" title="文档"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-settings-line"></use></svg></span></a></nav><hr style="margin-bottom:0.5rem"><div class="links-of-author"><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://github.com/cw-Guo" title="GitHub" target="_blank" style="color:#6e5494"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-github-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="mailto:tan0723mac@163.com" title="E-Mail" target="_blank" style="color:#8E71C1"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-mail-line"></use></svg></a></div><hr style="margin:0.5rem 1rem"><div class="links"><a class="links-item hty-icon-button" href="/profile" title="Academic CV" style="color:undefined"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-genderless-line"></use></svg></a></div><br><a class="links-item hty-icon-button" id="toggle-mode-btn" href="javascript:;" title="Mode" style="color: #f1cb64"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-contrast-2-line"></use></svg></a></div><div class="sidebar-panel sidebar-panel-active" id="post-toc-wrap"><div class="post-toc"><div class="post-toc-content"><ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#Leetcode-1046-%E6%9C%80%E5%90%8E%E4%B8%80%E5%9D%97%E7%9F%B3%E5%A4%B4%E7%9A%84%E9%87%8D%E9%87%8F"><span class="toc-number">1.</span> <span class="toc-text">Leetcode 1046 最后一块石头的重量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E6%9E%90"><span class="toc-number">2.</span> <span class="toc-text">分析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A0%86"><span class="toc-number">3.</span> <span class="toc-text">堆</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A0%86%E5%92%8C%E5%85%B6%E4%BB%96%E6%A0%91%E5%BD%A2%E7%BB%93%E6%9E%84%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">3.1.</span> <span class="toc-text">堆和其他树形结构的区别</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A0%86%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="toc-number">4.</span> <span class="toc-text">堆的实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A0%86%E6%8E%92%E5%BA%8F"><span class="toc-number">5.</span> <span class="toc-text">堆排序</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%9B%B4%E8%A7%82%E6%96%B9%E6%B3%95"><span class="toc-number">5.1.</span> <span class="toc-text">直观方法</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Inplace-%E7%9A%84%E5%A0%86%E6%8E%92%E5%BA%8F"><span class="toc-number">5.2.</span> <span class="toc-text">Inplace 的堆排序</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BA%94%E7%94%A8"><span class="toc-number">6.</span> <span class="toc-text">应用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="toc-number">7.</span> <span class="toc-text">参考文章</span></a></li></ol></div></div></div></aside><main class="sidebar-translate" id="content"><div id="post"><article class="post-block" itemscope itemtype="https://schema.org/Article"><link itemprop="mainEntityOfPage" href="https://cw-guo.github.io/2020/12/30/heap/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="cwGuo"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="庄生晓曼"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">heap<a class="post-edit-link" href="https://github.com/cw-Guo/cw-Guo.github.io/tree/hexo/source/_posts/heap.md" target="_blank" title="Edit this post" rel="noopener"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-edit-line"></use></svg></a></h1><div class="post-meta"><div class="post-time" style="display:block"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-line"></use></svg></span> <time title="Created: 2020-12-30 22:35:25" itemprop="dateCreated datePublished" datetime="2020-12-30T22:35:25+08:00">2020-12-30</time><span class="post-meta-divider">-</span><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-2-line"></use></svg></span> <time title="Modified: 2021-01-31 16:15:43" itemprop="dateModified" datetime="2021-01-31T16:15:43+08:00">2021-01-31</time></div><span class="post-count"><span class="post-symbolcount"><span class="post-meta-item-icon" title="Reading time"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-timer-line"></use></svg></span> <span title="Reading time">28 mins.</span></span></span><div class="post-classify"><span class="post-tag"><a class="tag" href="/tags/Algorithm/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">Algorithm</span></a></span></div></div></header><section class="post-body" itemprop="articleBody"><div class="post-content post-markdown"><p>本篇文章主要基于一道算法题，梳理一下堆的相关知识。</p>
+<h4 id="Leetcode-1046-最后一块石头的重量"><a href="#Leetcode-1046-最后一块石头的重量" class="headerlink" title="Leetcode 1046 最后一块石头的重量"></a>Leetcode 1046 最后一块石头的重量</h4><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/last-stone-weight/">这里</a>可以看到原题。</p>
+<p>有一堆石头，每块石头的重量都是正整数。</p>
+<p>每一回合，从中选出两块 最重的 石头，然后将它们一起粉碎。假设石头的重量分别为 x 和 y，且 x &lt;= y。那么粉碎的可能结果如下：</p>
+<ul>
+<li>如果 x == y，那么两块石头都会被完全粉碎；</li>
+<li>如果 x != y，那么重量为 x 的石头将会完全粉碎，而重量为 y 的石头新重量为 y-x。</li>
+</ul>
+<p>最后，最多只会剩下一块石头。返回此石头的重量。如果没有石头剩下，就返回 0。</p>
+<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><p>第一想法当然是按照语言描述模拟这个过程：</p>
+<ul>
+<li>排序</li>
+<li>执行“粉碎”过程。</li>
+<li>重复上述过程直到只剩一个数或均为零</li>
+</ul>
+<p>可以很明显地察觉到时间复杂度过高，每次循环都需要对数组进行重新排序。时间复杂度在$O(n^2lgn)$</p>
+<p>一个较为直接的优化方法就是简化这个重新排序的过程：维护一个大顶堆。</p>
+<h4 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h4><p>堆本质上并不是一个树，它利用完全二叉树的结构来维护一组数据。我们可以认为堆是一个数组。<br>每个节点 A[i]的左右两个子节点为:</p>
+<ul>
+<li>A[2i+1]</li>
+<li>A[2i+2]</li>
+</ul>
+<p>实际上，i + 1 的二进制表示可以认为是从根节点到元素A[i]的路径（第一个bit总为1）<br>eg: 3+1（4）的二进制表示为：100，也即，从根节点出发连续左移两位<br>由此我们也可以推得：A[2 - 1] 的左子树为A[4 - 1] (4 = 2 * 2 也即向左移动一位)</p>
+<ul>
+<li>2 = 1 + 1</li>
+<li>4 = 3 + 1</li>
+<li>8 = 7 + 1</li>
+</ul>
+<p>堆有两种：小根堆和大根堆。<br>需要注意的是，这两个名称都是说根节点的属性，根节点是最大还是最小。（对于每一个子结构都成立）<br>与其它非根节点的大小没有关系。节点的大小和节点的下标没有关系。</p>
+<h5 id="堆和其他树形结构的区别"><a href="#堆和其他树形结构的区别" class="headerlink" title="堆和其他树形结构的区别"></a>堆和其他树形结构的区别</h5><ul>
+<li>内存占用<br>普通树包含有指针结构，而堆则是数组，不用指针</li>
+<li>平衡<br>二叉搜索树必须是“平衡”的情况下，其大部分操作的复杂度才能达到O(log n)<br>但堆并不需要保持这种数据间的有序性，依旧可以保证O(log n) 的性能</li>
+<li>搜索性能<br>在二叉树中搜索会很快，但是在堆中搜索会很慢。<br>使用堆的目的是将最大（或者最小）的节点放在最前面，从而快速的进行相关插入、删除操作。</li>
+</ul>
+<h4 id="堆的实现"><a href="#堆的实现" class="headerlink" title="堆的实现"></a>堆的实现</h4><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Heap</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> desc <span class="token operator">=</span> <span class="token boolean">False</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token comment"># 初始化，构建一个小顶堆</span>
+      self<span class="token punctuation">.</span>heap <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+      self<span class="token punctuation">.</span>desc <span class="token operator">=</span> desc
+    
+    <span class="token decorator annotation punctuation">@property</span>
+    <span class="token keyword">def</span> <span class="token function">size</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+      <span class="token keyword">return</span> <span class="token builtin">len</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>heap<span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">top</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""
+        返回堆顶
+    """</span>
+      <span class="token keyword">if</span> self<span class="token punctuation">.</span>size<span class="token punctuation">:</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>heap<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+      <span class="token keyword">return</span> <span class="token boolean">None</span>
+    
+    <span class="token keyword">def</span> <span class="token function">push</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> item<span class="token punctuation">)</span><span class="token punctuation">:</span>
+      <span class="token triple-quoted-string string">"""
+        向堆中添加一个元素
+      """</span>
+      self<span class="token punctuation">.</span>heap<span class="token punctuation">.</span>append<span class="token punctuation">(</span>item<span class="token punctuation">)</span>
+      self<span class="token punctuation">.</span>_sift_up<span class="token punctuation">(</span>self<span class="token punctuation">.</span>size <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span>
+    
+    <span class="token keyword">def</span> <span class="token function">pop</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+      <span class="token triple-quoted-string string">"""
+        弹出堆顶
+        第一步，记录堆顶元素的值
+        第二步，交换堆顶元素与末尾元素
+        第三步，删除数组末尾元素
+        第四步，新的堆顶元素向下调整
+        第五步，返回答案
+      """</span>
+      self<span class="token punctuation">.</span>_swap<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> self<span class="token punctuation">.</span>size <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span>
+      item <span class="token operator">=</span> self<span class="token punctuation">.</span>heap<span class="token punctuation">.</span>pop<span class="token punctuation">(</span><span class="token punctuation">)</span>
+      self<span class="token punctuation">.</span>_sift_down<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+      <span class="token keyword">return</span> item
+
+    <span class="token keyword">def</span> <span class="token function">_smaller</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> lhs<span class="token punctuation">,</span> rhs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+      <span class="token triple-quoted-string string">""" RHS: Right-Hand-Side
+          LHS: Left-Hand-Side
+          此处的逻辑和 sift up 和 sift down 相关
+      """</span>
+
+      <span class="token keyword">return</span> lhs <span class="token operator">></span> rhs <span class="token keyword">if</span> self<span class="token punctuation">.</span>desc <span class="token keyword">else</span> lhs <span class="token operator">&lt;</span> rhs
+
+    <span class="token keyword">def</span> <span class="token function">_sift_up</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> index<span class="token punctuation">)</span><span class="token punctuation">:</span>
+      <span class="token triple-quoted-string string">"""
+      向上调整。
+      在末端插入元素时调用这个函数
+      对于小根堆：如果子节点小于父节点 那么需要交换 如上：返回 lhs &lt; rhs
+      对于大根堆，如果子节点大于父节点 那么需要交换
+      """</span>
+      <span class="token keyword">while</span> index<span class="token punctuation">:</span> <span class="token comment"># start from self.size - 1</span>
+        parent <span class="token operator">=</span> <span class="token punctuation">(</span>index <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">//</span> <span class="token number">2</span>
+        <span class="token keyword">if</span> self<span class="token punctuation">.</span>_smaller<span class="token punctuation">(</span>self<span class="token punctuation">.</span>heap<span class="token punctuation">[</span>parent<span class="token punctuation">]</span><span class="token punctuation">,</span> self<span class="token punctuation">.</span>heap<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token comment"># 子节点大 不需要操作</span>
+          <span class="token keyword">break</span>
+        
+        self<span class="token punctuation">.</span>_swap<span class="token punctuation">(</span>parent<span class="token punctuation">,</span> index<span class="token punctuation">)</span>
+        index <span class="token operator">=</span> parent
+ 
+    <span class="token keyword">def</span> <span class="token function">_sift_down</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> index<span class="token punctuation">)</span><span class="token punctuation">:</span>
+      <span class="token triple-quoted-string string">"""
+      向下调整。
+      在pop的时候调用这个函数
+      对于小根堆：如果子节点小于父节点 那么需要交换 如上：返回 lhs &lt; rhs
+      对于大根堆，如果子节点大于父节点 那么需要交换
+      """</span>
+      <span class="token keyword">while</span> <span class="token number">2</span> <span class="token operator">*</span> index <span class="token operator">+</span> <span class="token number">1</span> <span class="token operator">&lt;</span> self<span class="token punctuation">.</span>size<span class="token punctuation">:</span>
+        smallest <span class="token operator">=</span> index 
+        left <span class="token operator">=</span> <span class="token number">2</span> <span class="token operator">*</span> index <span class="token operator">+</span> <span class="token number">1</span>
+        right <span class="token operator">=</span> <span class="token number">2</span> <span class="token operator">*</span> index <span class="token operator">+</span> <span class="token number">2</span>
+
+        <span class="token keyword">if</span> self<span class="token punctuation">.</span>_smaller<span class="token punctuation">(</span>self<span class="token punctuation">.</span>heap<span class="token punctuation">[</span>left<span class="token punctuation">]</span><span class="token punctuation">,</span> self<span class="token punctuation">.</span>heap<span class="token punctuation">[</span>smallest<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+          smallest <span class="token operator">=</span> left
+        <span class="token keyword">if</span> right <span class="token operator">&lt;</span> self<span class="token punctuation">.</span>size <span class="token keyword">and</span> self<span class="token punctuation">.</span>_smaller<span class="token punctuation">(</span>self<span class="token punctuation">.</span>heap<span class="token punctuation">[</span>right<span class="token punctuation">]</span><span class="token punctuation">,</span> self<span class="token punctuation">.</span>heap<span class="token punctuation">[</span>smallest<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+          smallest <span class="token operator">=</span> right
+        
+        <span class="token keyword">if</span> smallest <span class="token operator">==</span> index<span class="token punctuation">:</span>
+          <span class="token keyword">break</span>
+        
+        self<span class="token punctuation">.</span>_swap<span class="token punctuation">(</span>index<span class="token punctuation">,</span> smallest<span class="token punctuation">)</span> <span class="token comment"># 交换之后，index 的位置成了最小的，但是smallest 位置的大小不确定</span>
+        index <span class="token operator">=</span> smallest
+
+    <span class="token keyword">def</span> <span class="token function">_swap</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>i <span class="token punctuation">,</span>j<span class="token punctuation">)</span><span class="token punctuation">:</span>
+      self<span class="token punctuation">.</span>heap<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> self<span class="token punctuation">.</span>heap<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> self<span class="token punctuation">.</span>heap<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">,</span> self<span class="token punctuation">.</span>heap<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+</code></pre>
+<h4 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h4><p>堆排序（Heapsort）是指利用堆这种数据结构所设计的一种排序算法。堆排序可以说是一种利用堆的概念来排序的选择排序。<br>由于堆的内部顺序并不确定，确定的只有堆顶。</p>
+<h5 id="直观方法"><a href="#直观方法" class="headerlink" title="直观方法"></a>直观方法</h5><p>最基本的方法是：</p>
+<ul>
+<li>构造得到一个堆</li>
+<li>不断从堆中pop出堆顶</li>
+<li>将上述值存下来，最终输出</li>
+</ul>
+<p>缺点：需要额外的内存存储。</p>
+  <pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">heap_sort</span><span class="token punctuation">(</span>lst<span class="token punctuation">)</span><span class="token punctuation">:</span>
+  
+  <span class="token keyword">if</span> <span class="token keyword">not</span> lst<span class="token punctuation">:</span>
+    <span class="token keyword">return</span> lst
+  out <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+  <span class="token comment"># construct a heap</span>
+  heap <span class="token operator">=</span> Heap<span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token keyword">for</span> elem <span class="token keyword">in</span> lst<span class="token punctuation">:</span>
+    heap<span class="token punctuation">.</span>push<span class="token punctuation">(</span>elem<span class="token punctuation">)</span>
+  
+  <span class="token keyword">while</span> heap<span class="token punctuation">.</span>size <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">:</span>
+    out<span class="token punctuation">.</span>append<span class="token punctuation">(</span>heap<span class="token punctuation">.</span>pop<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token keyword">return</span> out</code></pre>
+<h5 id="Inplace-的堆排序"><a href="#Inplace-的堆排序" class="headerlink" title="Inplace 的堆排序"></a>Inplace 的堆排序</h5><ul>
+<li>堆的特性<br>如果A[0, end) 是一个堆，从堆中获取最小元素并删除后，元素存放在A[0, end - 1), 而 A[end - 1] 则成为一个空位（但是它在最右边）</li>
+</ul>
+<p>为了能够充分利用这个空位：</p>
+<ul>
+<li>建立一个最大堆</li>
+<li>不断获取最大值，把这个值存放在堆最后的空位上：这样以后，我们的前半部分是一个堆，后半部分是一个有序序列</li>
+<li>堆为空的时候，数组就是一个排好序的序列</li>
+</ul>
+<h4 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h4><p>leetcode 347</p>
+<p>原则：最大堆求前n小，最小堆求前n大。<br>前k小：构建一个k个数的最大堆，当读取的数小于根节点时，替换根节点，重新塑造最大堆<br>前k大：构建一个k个数的最小堆，当读取的数大于根节点时，替换根节点，重新塑造最小堆</p>
+<h4 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h4><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/6b526aa481b1">数据结构：堆</a><br><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/last-stone-weight/solution/python-zui-da-dui-diao-ku-shou-xie-shi-x-utdj/">leetcode 1046 题解, by Hao Kun Yang</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/lmy_xxn/article/details/103800683">python手写堆（leetcode347）</a><br><a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python-heap-sort.html">Python 堆排序</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/shiqi17/p/9694938.html">堆排、python实现堆排</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/d174f1862601">堆排序的Python实现</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.liaoxuefeng.com/wiki/1016959663602400/1017451662295584">python 装饰器</a></p>
+</div><ul class="post-copyright"><li class="post-copyright-author"><strong>Post author: </strong>cwGuo</li><li class="post-copyright-link"><strong>Post link: </strong><a href="https://cw-guo.github.io/2020/12/30/heap/" title="heap">https://cw-guo.github.io/2020/12/30/heap/</a></li><li class="post-copyright-license"><strong>Copyright Notice: </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" title="CC BY-NC-SA 4.0 "><svg class="icon"><use xlink:href="#icon-creative-commons-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-by-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-nc-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-sa-line"></use></svg></a> unless stating additionally.</li></ul></section></article><div class="post-nav"><div class="post-nav-item"><a class="post-nav-prev" href="/2021/01/09/dynamic-programming/" rel="prev" title="动态规划的二三事"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-left-s-line"></use></svg><span class="post-nav-text">动态规划的二三事</span></a></div><div class="post-nav-item"><a class="post-nav-next" href="/2020/12/11/my2020/" rel="next" title="我的2020"><span class="post-nav-text">我的2020</span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-right-s-line"></use></svg></a></div></div></div><div id="comment"><div class="comment-tooltip text-center"><span>点击按钮跳转 GitHub Issues 评论。</span><br><span>若没有本文 Issue，您可以使用 Comment 模版新建。</span><br><a class="hty-button hty-button--raised" id="github-issues" target="_blank" rel="noopener" href="https://github.com/YunYouJun/yunyoujun.github.io/issues?q=is:issue+heap">GitHub Issues</a></div></div></main><footer class="sidebar-translate" id="footer"><div class="copyright"><span>&copy; 2020 – 2021 </span><span class="with-love" id="animate"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-heart-line"></use></svg></span><span class="author"> cwGuo</span></div><div class="powered"><span>Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> v5.3.0</span><span class="footer-separator">|</span><span>Theme - <a rel="noopener" href="https://github.com/YunYouJun/hexo-theme-yun" target="_blank"><span>Yun</span></a> v0.9.1</span></div><div class="live_time"><span>本博客已运行</span><span id="display_live_time"></span><script>function blog_live_time() {
+  window.setTimeout(blog_live_time, 1000);
+  const start = new Date('2020-06-28T00:00:00');
+  const now = new Date();
+  const timeDiff = (now.getTime() - start.getTime());
+  const msPerMinute = 60 * 1000;
+  const msPerHour = 60 * msPerMinute;
+  const msPerDay = 24 * msPerHour;
+  const passDay = Math.floor(timeDiff / msPerDay);
+  const passHour = Math.floor((timeDiff % msPerDay) / 60 / 60 / 1000);
+  const passMinute = Math.floor((timeDiff % msPerHour) / 60 / 1000);
+  const passSecond = Math.floor((timeDiff % msPerMinute) / 1000);
+  display_live_time.innerHTML = " " + passDay + " 天 " + passHour + " 小时 " + passMinute + " 分 " + passSecond + " 秒";
+}
+blog_live_time();
+</script></div></footer><a class="hty-icon-button" id="goUp" aria-label="back-to-top" href="#"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-up-s-line"></use></svg><svg class="progress-circle-container" viewBox="0 0 100 100"><circle class="progress-circle" id="progressCircle" cx="50" cy="50" r="48" fill="none" stroke="#0078E7" stroke-width="2" stroke-linecap="round"></circle></svg></a></div><script defer src="/js/utils.js"></script><script defer src="/js/hexo-theme-yun.js"></script></body></html>
